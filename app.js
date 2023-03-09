@@ -25,7 +25,7 @@ app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
 app.patch('*', (req, res) => {
-  res.status(400).send({ message: 'не верный URL' });
+  res.status(404).send({ message: 'не верный URL' });
 });
 
 app.listen(PORT, () => {
