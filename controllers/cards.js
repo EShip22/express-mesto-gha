@@ -19,9 +19,8 @@ module.exports.getCards = (req, res) => {
 module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
   const { _id } = req.user;
-
-  cards.create({ name, link, owner: _id }, { new: true })
-    .then(() => res.send({ data: cards }))
+  cards.create({ name, link, owner: _id })
+    .then((card) => res.status(200).send({ data: card }))
     .catch((err) => {
       if (err.toString().indexOf('ValidationError') >= 0) {
         res.status(ERROR_VALIDATION).send({ message: 'Ошибка валидации' });
@@ -55,7 +54,7 @@ module.exports.likeCard = (req, res) => {
     if (!cardRes) {
       res.status(ERROR_NO_DATA_FOUND).send({ message: 'Карточка не найдена' });
     } else {
-      res.send(cardRes);
+      res.status(200).send(cardRes);
     }
   })
     .catch(() => {
