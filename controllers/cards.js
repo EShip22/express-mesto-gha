@@ -49,7 +49,7 @@ module.exports.likeCard = (req, res) => {
   cards.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
-    { new: true },
+    { new: true, runValidators: true },
   ).then((cardRes) => {
     if (!cardRes) {
       res.status(ERROR_NO_DATA_FOUND).send({ message: 'Карточка не найдена' });
@@ -58,6 +58,7 @@ module.exports.likeCard = (req, res) => {
     }
   })
     .catch(() => {
+      res.status(ERROR_VALIDATION).send({ message: 'Ошибка валидации' });
       res.status(ERROR_OTHERS).send({ message: 'Произошла ошибка' });
     });
 };
@@ -66,15 +67,16 @@ module.exports.dislikeCard = (req, res) => {
   cards.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
-    { new: true },
+    { new: true, runValidators: true },
   ).then((cardRes) => {
     if (!cardRes) {
       res.status(ERROR_NO_DATA_FOUND).send({ message: 'Карточка не найдена' });
     } else {
-      res.send(cardRes);
+      res.status(200).send(cardRes);
     }
   })
     .catch(() => {
+      res.status(ERROR_VALIDATION).send({ message: 'Ошибка валидации' });
       res.status(ERROR_OTHERS).send({ message: 'Произошла ошибка' });
     });
 };
