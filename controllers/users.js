@@ -57,8 +57,10 @@ module.exports.updateUser = (req, res) => {
   } = req.body;
   const { _id } = req.user;
 
-  users.findByIdAndUpdate(_id, { name, about }, {runValidators: true})
+  users.findByIdAndUpdate(_id, { name, about }, { new: true, runValidators: true })
     .then((resUser) => {
+      /*  console.log(resUser);
+      console.log(res); */
       if (resUser.length === 0) {
         res.status(ERROR_NO_DATA_FOUND).send({ message: 'Пользователь не найден' });
       } else {
@@ -66,7 +68,8 @@ module.exports.updateUser = (req, res) => {
       }
     })
     .catch((err) => {
-      if (err.name === 'ValidatorError') {
+      console.log(err);
+      if (err.toString().indexOf('ValidationError') >= 0) {
         res.status(ERROR_VALIDATION).send({ message: 'Ошибка валидации' });
       } else {
         res.status(ERROR_OTHERS).send({ message: 'Произошла ошибка' });
@@ -78,7 +81,7 @@ module.exports.updateAvatar = (req, res) => {
   const { avatar } = req.headers;
   const { _id } = req.user;
 
-  users.findByIdAndUpdate(_id, { avatar })
+  users.findByIdAndUpdate(_id, { avatar }, { new: true, runValidators: true })
     .then((resUser) => {
       if (resUser.length === 0) {
         res.status(ERROR_NO_DATA_FOUND).send({ message: 'Пользователь не найден' });
@@ -87,7 +90,7 @@ module.exports.updateAvatar = (req, res) => {
       }
     })
     .catch((err) => {
-      if (err.name === 'ValidatorError') {
+      if (err.toString().indexOf('ValidationError') >= 0) {
         res.status(ERROR_VALIDATION).send({ message: 'Ошибка валидации' });
       } else {
         res.status(ERROR_OTHERS).send({ message: 'Произошла ошибка' });
