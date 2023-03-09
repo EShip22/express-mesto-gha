@@ -41,6 +41,7 @@ module.exports.delCard = (req, res) => {
       }
     })
     .catch(() => {
+      res.status(ERROR_VALIDATION).send({ message: 'Ошибка валидации' });
       res.status(ERROR_OTHERS).send({ message: 'Произошла ошибка' });
     });
 };

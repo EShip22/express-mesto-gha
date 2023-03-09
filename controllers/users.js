@@ -98,3 +98,9 @@ module.exports.updateAvatar = (req, res) => {
       }
     });
 };
+
+module.exports.showError = (req, res) => {
+  console.log('xxx');
+  console.log(res);
+  res.status(200).send({ message: 'не верный URL' });
+};
