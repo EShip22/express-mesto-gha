@@ -55,7 +55,6 @@ module.exports.updateUser = (req, res) => {
   const {
     name, about,
   } = req.body;
-
   const { _id } = req.user;
 
   users.findByIdAndUpdate(_id, { name, about })
