@@ -33,9 +33,14 @@ module.exports.createUser = (req, res) => {
 
 module.exports.getUser = (req, res) => {
   const { userId } = req.params;
+  if (userId) {
+    if (userId.length % 12 !== 0) {
+      res.status(ERROR_VALIDATION).send({ message: 'Некорректный id пользователя' });
+    }
+  }
   users.findById(userId)
     .then((resUser) => {
-      if (resUser.length === 0) {
+      if (!resUser) {
         res.status(ERROR_NO_DATA_FOUND).send({ message: 'Пользователь не найден' });
       } else {
         res.status(200).send(resUser);
@@ -55,13 +60,15 @@ module.exports.updateUser = (req, res) => {
 
   users.findByIdAndUpdate(_id, { name, about })
     .then((resUser) => {
+      console.log(resUser);
       if (resUser.length === 0) {
         res.status(ERROR_NO_DATA_FOUND).send({ message: 'Пользователь не найден' });
       } else {
-        res.status(200).send(resUser);
+        res.status(200).send(res.req.body);
       }
     })
     .catch((err) => {
+      console.log(err);
       if (err.name === 'ValidatorError') {
         res.status(ERROR_VALIDATION).send({ message: 'Ошибка валидации' });
       } else {
