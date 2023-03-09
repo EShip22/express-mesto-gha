@@ -37,7 +37,7 @@ module.exports.delCard = (req, res) => {
       if (!cardRes) {
         res.status(ERROR_NO_DATA_FOUND).send({ message: 'Карточка не найдена' });
       } else {
-        res.send(res);
+        res.status(200).send(cardRes);
       }
     })
     .catch(() => {
