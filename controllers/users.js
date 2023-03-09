@@ -23,7 +23,7 @@ module.exports.createUser = (req, res) => {
   users.create({ name, about, avatar })
     .then((user) => res.status(200).send({ data: user }))
     .catch((err) => {
-      if (err.name === 'ValidatorError') {
+      if (err.toString().indexOf('ValidationError') >= 0) {
         res.status(ERROR_VALIDATION).send({ message: 'Ошибка валидации' });
       } else {
         res.status(ERROR_OTHERS).send({ message: 'Произошла ошибка' });
