@@ -60,7 +60,6 @@ module.exports.updateUser = (req, res) => {
 
   users.findByIdAndUpdate(_id, { name, about })
     .then((resUser) => {
-      console.log(resUser);
       if (resUser.length === 0) {
         res.status(ERROR_NO_DATA_FOUND).send({ message: 'Пользователь не найден' });
       } else {
@@ -68,7 +67,6 @@ module.exports.updateUser = (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(err);
       if (err.name === 'ValidatorError') {
         res.status(ERROR_VALIDATION).send({ message: 'Ошибка валидации' });
       } else {
