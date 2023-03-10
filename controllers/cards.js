@@ -7,13 +7,11 @@ const ERROR_OTHERS = 500;
 module.exports.getCards = (req, res) => {
   cards.find({})
     .then((resCards) => {
-      /*  if (resCards.length === 0) {
+      if (!resCards) {
         res.status(ERROR_NO_DATA_FOUND).send({ message: 'Карточки не найдены' });
       } else {
         res.status(200).send({ data: resCards });
-      } */
-      res.status(ERROR_NO_DATA_FOUND).send({ message: 'Карточки не найдены' });
-      res.status(200).send({ data: resCards });
+      }
     })
     .catch(() => res.status(ERROR_OTHERS).send({ message: 'Произошла ошибка' }));
 };
