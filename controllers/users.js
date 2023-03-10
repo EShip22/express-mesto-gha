@@ -80,10 +80,6 @@ module.exports.updateAvatar = (req, res) => {
 
   users.findByIdAndUpdate(_id, { avatar }, { new: true, runValidators: true })
     .then((resUser) => {
-      console.log('res');
-      console.log(res);
-      console.log('resUser');
-      console.log(resUser);
       if (resUser.length === 0) {
         res.status(ERROR_NO_DATA_FOUND).send({ message: 'Пользователь не найден' });
       } else {
@@ -100,7 +96,5 @@ module.exports.updateAvatar = (req, res) => {
 };
 
 module.exports.showError = (req, res) => {
-  console.log('xxx');
-  console.log(res);
   res.status(200).send({ message: 'не верный URL' });
 };
