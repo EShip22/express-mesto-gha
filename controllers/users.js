@@ -13,7 +13,7 @@ module.exports.getUsers = (req, res) => {
         res.status(200).send({ data: resUsers });
       }
     })
-    .catch(() => res.status(ERROR_OTHERS).send({ message: 'Произошла ошибка' }));
+    .catch(() => res.status(ERROR_OTHERS).send({ message: 'На сервере произошла ошибка' }));
 };
 
 module.exports.createUser = (req, res) => {
@@ -26,7 +26,7 @@ module.exports.createUser = (req, res) => {
       if (err.toString().indexOf('ValidationError') >= 0) {
         res.status(ERROR_VALIDATION).send({ message: 'Ошибка валидации' });
       } else {
-        res.status(ERROR_OTHERS).send({ message: 'Произошла ошибка' });
+        res.status(ERROR_OTHERS).send({ message: 'На сервере произошла ошибка' });
       }
     });
 };
@@ -47,7 +47,7 @@ module.exports.getUser = (req, res) => {
       }
     })
     .catch(() => {
-      res.status(ERROR_OTHERS).send({ message: 'Произошла ошибка' });
+      res.status(ERROR_OTHERS).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -69,7 +69,7 @@ module.exports.updateUser = (req, res) => {
       if (err.toString().indexOf('ValidationError') >= 0) {
         res.status(ERROR_VALIDATION).send({ message: 'Ошибка валидации' });
       } else {
-        res.status(ERROR_OTHERS).send({ message: 'Произошла ошибка' });
+        res.status(ERROR_OTHERS).send({ message: 'На сервере произошла ошибка' });
       }
     });
 };
@@ -90,7 +90,7 @@ module.exports.updateAvatar = (req, res) => {
       if (err.toString().indexOf('ValidationError') >= 0) {
         res.status(ERROR_VALIDATION).send({ message: 'Ошибка валидации' });
       } else {
-        res.status(ERROR_OTHERS).send({ message: 'Произошла ошибка' });
+        res.status(ERROR_OTHERS).send({ message: 'На сервере произошла ошибка' });
       }
     });
 };
