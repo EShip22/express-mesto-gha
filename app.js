@@ -1,6 +1,7 @@
 const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
+const { errors } = require('celebrate');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -21,7 +22,7 @@ app.use('/cards', require('./routes/cards'));
 app.patch('*', (req, res) => {
   res.status(404).send({ message: 'не верный URL' });
 });
-
+app.use(errors());
 app.use((err, req, res, next) => {
   console.log('22222');
   const { statusCode = 500, message } = err;
