@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
+app.use('/', require('./routes/users'));
 
 app.patch('*', (req, res) => {
   res.status(404).send({ message: 'не верный URL' });
