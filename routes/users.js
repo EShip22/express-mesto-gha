@@ -1,4 +1,4 @@
-//  routes
+const { celebrate, Joi } = require('celebrate');
 
 const router = require('express').Router();
 const {
@@ -29,7 +29,12 @@ router.get('/:userId', auth, getUser);
 //  eyJpYXQiOjE2NzkxNTg4NDcsImV4cCI6MTY3OTc2MzY0N30.CHi0uu9TtMJTRniL0LGWvkl3eKysQfOScZ1pZZjTszA"
 //  }
 
-router.post('/signup', createUser);
+router.post('/signup', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+    about: Joi.string().required().min(2).max(30),
+  }),
+}), createUser);
 router.post('/signin', login);
 router.patch('/me', auth, updateUser);
 router.patch('/me/avatar', auth, updateAvatar);
