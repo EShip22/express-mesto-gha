@@ -1,57 +1,76 @@
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const user = require('../models/user');
 const users = require('../models/user');
+//  ошибки
+const NotFoundError = require('../errors/not-found-err');
+const ValidationError = require('../errors/validation-err');
+const IncorrectEmailPasswordError = require('../errors/incorrect-email-password-err');
+const AlreadyExistsEmailError = require('../errors/already-exists-email-err');
 
-const ERROR_VALIDATION = 400;
-const ERROR_NO_DATA_FOUND = 404;
-const ERROR_OTHERS = 500;
-
-module.exports.getUsers = (req, res) => {
+module.exports.getUsers = (req, res, next) => {
   users.find({})
     .then((resUsers) => {
       if (resUsers.length === 0) {
-        res.status(ERROR_NO_DATA_FOUND).send({ message: 'Пользователи не найдены' });
+        throw new NotFoundError('Пользователи не найдены');
       } else {
         res.status(200).send({ data: resUsers });
       }
     })
-    .catch(() => res.status(ERROR_OTHERS).send({ message: 'На сервере произошла ошибка' }));
+    .catch(next);
 };
 
-module.exports.createUser = (req, res) => {
-  const {
-    name, about, avatar,
-  } = req.body;
-  users.create({ name, about, avatar })
-    .then((user) => res.status(200).send({ data: user }))
-    .catch((err) => {
-      if (err.toString().indexOf('ValidationError') >= 0) {
-        res.status(ERROR_VALIDATION).send({ message: 'Ошибка валидации' });
-      } else {
-        res.status(ERROR_OTHERS).send({ message: 'На сервере произошла ошибка' });
-      }
-    });
-};
-
-module.exports.getUser = (req, res) => {
+module.exports.getUser = (req, res, next) => {
   const { userId } = req.params;
   if (userId) {
     if (userId.length % 12 !== 0) {
-      res.status(ERROR_VALIDATION).send({ message: 'Некорректный id пользователя' });
+      throw new ValidationError('Некорректный id пользователя');
     }
   }
   users.findById(userId)
     .then((resUser) => {
       if (!resUser) {
-        res.status(ERROR_NO_DATA_FOUND).send({ message: 'Пользователь не найден' });
+        throw new NotFoundError('Пользователь не найден');
       } else {
         res.status(200).send(resUser);
       }
     })
-    .catch(() => {
-      res.status(ERROR_OTHERS).send({ message: 'На сервере произошла ошибка' });
-    });
+    .catch(next);
 };
 
-module.exports.updateUser = (req, res) => {
+module.exports.createUser = (req, res, next) => {
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
+
+  user.findOne({ email }).select('+password')
+    .then((finduser) => {
+      if (finduser) {
+        throw new AlreadyExistsEmailError('Пользователь с данным email уже зарегистрирован');
+      }
+    })
+    .catch(next);
+
+  bcrypt.hash(password, 10)
+    .then((hash) => user.create({
+      name,
+      about,
+      avatar,
+      email,
+      password: hash,
+    }))
+    .then((newuser) => res.status(200).send({ id: newuser._id, name: newuser.name }))
+    .catch((err) => {
+      if (err.toString().indexOf('ValidationError') >= 0) {
+        throw new ValidationError('Ошибка валидации');
+      } else {
+        throw new Error('На сервере произошла ошибка');
+      }
+    })
+    .catch(next);
+};
+
+module.exports.updateUser = (req, res, next) => {
   const {
     name, about,
   } = req.body;
@@ -60,39 +79,83 @@ module.exports.updateUser = (req, res) => {
   users.findByIdAndUpdate(_id, { name, about }, { new: true, runValidators: true })
     .then((resUser) => {
       if (resUser.length === 0) {
-        res.status(ERROR_NO_DATA_FOUND).send({ message: 'Пользователь не найден' });
+        throw new NotFoundError('Пользователь не найден');
       } else {
         res.status(200).send(res.req.body);
       }
     })
     .catch((err) => {
       if (err.toString().indexOf('ValidationError') >= 0) {
-        res.status(ERROR_VALIDATION).send({ message: 'Ошибка валидации' });
+        throw new ValidationError('Ошибка валидации');
       } else {
-        res.status(ERROR_OTHERS).send({ message: 'На сервере произошла ошибка' });
+        throw new Error('На сервере произошла ошибка');
       }
-    });
+    })
+    .catch(next);
 };
 
-module.exports.updateAvatar = (req, res) => {
+module.exports.updateAvatar = (req, res, next) => {
   const { avatar } = req.headers;
   const { _id } = req.user;
 
   users.findByIdAndUpdate(_id, { avatar }, { new: true, runValidators: true })
     .then((resUser) => {
       if (resUser.length === 0) {
-        res.status(ERROR_NO_DATA_FOUND).send({ message: 'Пользователь не найден' });
+        throw new NotFoundError('Пользователь не найден');
       } else {
         res.status(200).send(res.req.body);
       }
     })
     .catch((err) => {
       if (err.toString().indexOf('ValidationError') >= 0) {
-        res.status(ERROR_VALIDATION).send({ message: 'Ошибка валидации' });
+        throw new ValidationError('Ошибка валидации');
       } else {
-        res.status(ERROR_OTHERS).send({ message: 'На сервере произошла ошибка' });
+        throw new Error('На сервере произошла ошибка');
       }
-    });
+    })
+    .catch(next);
+};
+
+module.exports.login = (req, res, next) => {
+  const { email, password } = req.body;
+  user.findOne({ email }).select('+password')
+    .then((finduser) => {
+      if (!finduser) {
+        throw new NotFoundError('Пользователь не найден');
+      }
+      // пользователь найден
+      bcrypt.compare(password, finduser.password);
+    })
+    .then((matched) => {
+      if (!matched) {
+        // хеши не совпали — отклоняем промис
+        throw new IncorrectEmailPasswordError('Неверные email или пароль');
+      }
+      // аутентификация успешна
+      const _id = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
+      res.status(200).send({ _id });
+    })
+    .catch(() => {
+      throw new Error('На сервере произошла ошибка');
+    })
+    .catch(next);
+};
+
+module.exports.getMeInfo = (req, res, next) => {
+  const userId = req.user._id;
+
+  users.findById(userId)
+    .then((resUser) => {
+      if (!resUser) {
+        throw new NotFoundError('Пользователь не найден');
+      } else {
+        res.status(200).send(resUser);
+      }
+    })
+    .catch(() => {
+      throw new Error('На сервере произошла ошибка');
+    })
+    .catch(next);
 };
 
 module.exports.showError = (req, res) => {

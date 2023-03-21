@@ -1,83 +1,99 @@
 const cards = require('../models/card');
 
-const ERROR_VALIDATION = 400;
-const ERROR_NO_DATA_FOUND = 404;
-const ERROR_OTHERS = 500;
+//  ошибки
+const DelNotMyCardError = require('../errors/del-not-my-card-err');
+const NotFoundError = require('../errors/not-found-err');
+const ValidationError = require('../errors/validation-err');
 
-module.exports.getCards = (req, res) => {
+module.exports.getCards = (req, res, next) => {
   cards.find({})
     .then((resCards) => {
       if (!resCards) {
-        res.status(ERROR_NO_DATA_FOUND).send({ message: 'Карточки не найдены' });
+        throw new NotFoundError('Карточки не найдены');
       } else {
         res.status(200).send({ data: resCards });
       }
     })
-    .catch(() => res.status(ERROR_OTHERS).send({ message: 'На сервере произошла ошибка' }));
+    .catch(() => {
+      throw new Error('На сервере произошла ошибка');
+    })
+    .catch(next);
 };
 
-module.exports.createCard = (req, res) => {
+module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
   const { _id } = req.user;
   cards.create({ name, link, owner: _id })
     .then((card) => res.status(200).send({ data: card }))
     .catch((err) => {
       if (err.toString().indexOf('ValidationError') >= 0) {
-        res.status(ERROR_VALIDATION).send({ message: 'Ошибка валидации' });
+        throw new ValidationError('Ошибка валидации');
       } else {
-        res.status(ERROR_OTHERS).send({ message: 'На сервере произошла ошибка' });
+        throw new Error('На сервере произошла ошибка');
       }
-    });
+    })
+    .catch(next);
 };
 
-module.exports.delCard = (req, res) => {
+module.exports.delCard = (req, res, next) => {
   const { cardId } = req.params;
-  cards.findByIdAndDelete(cardId)
-    .then((cardRes) => {
-      if (!cardRes) {
-        res.status(ERROR_NO_DATA_FOUND).send({ message: 'Карточка не найдена' });
-      } else {
-        res.status(200).send(cardRes);
+  const { _id } = req.user;
+  cards.findById(cardId)
+    .then((card) => {
+      // если не найдена, то ошибка
+      if (!card) {
+        throw new NotFoundError('Карточка не найдена');
+      } else if (card) {
+        // проверяем, что карточка создана мной
+        if (card.owner === _id) {
+          cards.findByIdAndDelete(cardId)
+            .then((cardRes) => {
+              res.status(200).send(cardRes);
+            });
+        } else {
+          // ошибка, что не моя карточка
+          throw new DelNotMyCardError('Разрешается удалять только свои карточки');
+        }
       }
     })
     .catch(() => {
-      res.status(ERROR_VALIDATION).send({ message: 'Ошибка валидации' });
-      res.status(ERROR_OTHERS).send({ message: 'На сервере произошла ошибка' });
-    });
+      throw new Error('На сервере произошла ошибка');
+    })
+    .catch(next);
 };
 
-module.exports.likeCard = (req, res) => {
+module.exports.likeCard = (req, res, next) => {
   cards.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
     { new: true, runValidators: true },
   ).then((cardRes) => {
     if (!cardRes) {
-      res.status(ERROR_NO_DATA_FOUND).send({ message: 'Карточка не найдена' });
+      throw new NotFoundError('Карточка не найдена');
     } else {
       res.status(200).send(cardRes);
     }
   })
     .catch(() => {
-      res.status(ERROR_VALIDATION).send({ message: 'Ошибка валидации' });
-      res.status(ERROR_OTHERS).send({ message: 'На сервере произошла ошибка' });
-    });
+      throw new Error('На сервере произошла ошибка');
+    })
+    .catch(next);
 };
 
-module.exports.dislikeCard = (req, res) => {
+module.exports.dislikeCard = (req, res, next) => {
   cards.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
     { new: true, runValidators: true },
   ).then((cardRes) => {
     if (!cardRes) {
-      res.status(ERROR_NO_DATA_FOUND).send({ message: 'Карточка не найдена' });
+      throw new NotFoundError('Карточка не найдена');
     } else {
       res.status(200).send(cardRes);
     }
   })
     .catch(() => {
-      res.status(ERROR_VALIDATION).send({ message: 'Ошибка валидации' });
-      res.status(ERROR_OTHERS).send({ message: 'На сервере произошла ошибка' });
-    });
+      throw new Error('На сервере произошла ошибка');
+    })
+    .catch(next);
 };
