@@ -142,10 +142,6 @@ module.exports.login = (req, res, next) => {
       const _id = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
       res.status(200).send({ _id });
     })
-    .catch(() => {
-      console.log(222222);
-      throw new Error('На сервере произошла ошибка');
-    })
     .catch(next);
 };
 
