@@ -45,7 +45,11 @@ router.post('/signin', celebrate({
     password: Joi.string().required().min(8),
   }),
 }), login);
-router.patch('/me', auth, updateUser);
+router.patch('/me', auth, celebrate({
+  params: Joi.object().keys({
+    userId: Joi.string().length(24),
+  }),
+}), updateUser);
 router.patch('/me/avatar', auth, updateAvatar);
 router.patch('/*', showError);
 
