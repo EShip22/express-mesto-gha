@@ -15,7 +15,11 @@ const auth = require('../middlewares/auth');
 
 router.get('/', auth, getUsers);
 router.get('/me', auth, getMeInfo);
-router.get('/:userId', auth, getUser);
+router.get('/:userId', auth, celebrate({
+  params: Joi.object().keys({
+    userId: Joi.string().alphanum().length(24),
+  }),
+}), getUser);
 //  регистрируемся:
 //  {
 //    "email": "prank22@yandex.ru",
@@ -46,11 +50,16 @@ router.post('/signin', celebrate({
   }),
 }), login);
 router.patch('/me', auth, celebrate({
-  params: Joi.object().keys({
-    userId: Joi.string().length(24),
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
   }),
 }), updateUser);
-router.patch('/me/avatar', auth, updateAvatar);
+router.patch('/me/avatar', auth, celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().pattern(httpRegexG),
+  }),
+}), updateAvatar);
 router.patch('/*', showError);
 
 module.exports = router;

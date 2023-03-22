@@ -22,11 +22,11 @@ module.exports.getUsers = (req, res, next) => {
 
 module.exports.getUser = (req, res, next) => {
   const { userId } = req.params;
-  if (userId) {
+  /*  if (userId) {
     if (userId.length % 12 !== 0) {
       throw new ValidationError('Некорректный id пользователя');
     }
-  }
+  } */
   users.findById(userId)
     .then((resUser) => {
       if (!resUser) {
