@@ -6,6 +6,7 @@ const { errors } = require('celebrate');
 const { PORT = 3000 } = process.env;
 const app = express();
 const bodyParser = require('body-parser');
+const NotFoundError = require('./errors/not-found-err');
 
 mongoose.connect('mongodb://127.0.0.1:27017/mydb');
 
@@ -18,8 +19,9 @@ app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 app.use('/', require('./routes/users'));
 
-app.patch('*', (req, res) => {
-  res.status(404).send({ message: 'не верный URL' });
+//  app.patch('*', (req, res) => {
+app.patch('*', () => {
+  throw new NotFoundError('не верный URL');//  res.status(404).send({ message: 'не верный URL' });
 });
 app.use(errors());
 app.use((err, req, res, next) => {

@@ -57,9 +57,9 @@ module.exports.delCard = (req, res, next) => {
         }
       }
     })
-    .catch(() => {
+    /*  .catch(() => {
       throw new Error('На сервере произошла ошибка');
-    })
+    })  */
     .catch(next);
 };
 
@@ -75,9 +75,9 @@ module.exports.likeCard = (req, res, next) => {
       res.status(200).send(cardRes);
     }
   })
-    .catch(() => {
+    /*  .catch(() => {
       throw new Error('На сервере произошла ошибка');
-    })
+    })  */
     .catch(next);
 };
 
@@ -93,8 +93,8 @@ module.exports.dislikeCard = (req, res, next) => {
       res.status(200).send(cardRes);
     }
   })
-    .catch(() => {
+    /*  .catch(() => {
       throw new Error('На сервере произошла ошибка');
-    })
+    })  */
     .catch(next);
 };

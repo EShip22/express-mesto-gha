@@ -170,6 +170,6 @@ module.exports.getMeInfo = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.showError = (req, res) => {
-  res.status(200).send({ message: 'не верный URL' });
+module.exports.showError = () => {
+  throw new NotFoundError('неверный URL');
 };
