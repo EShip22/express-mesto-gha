@@ -6,8 +6,6 @@ const { errors } = require('celebrate');
 const { PORT = 3000 } = process.env;
 const app = express();
 const bodyParser = require('body-parser');
-//  const { createUser, login } = require('./controllers/users');
-//  const auth = require('./middlewares/auth');
 
 mongoose.connect('mongodb://127.0.0.1:27017/mydb');
 
@@ -25,9 +23,7 @@ app.patch('*', (req, res) => {
 });
 app.use(errors());
 app.use((err, req, res, next) => {
-  console.log('22222');
   const { statusCode = 500, message } = err;
-  console.log('Обработчик ошибки');
   res.status(err.statusCode).send({ message: statusCode === 500 ? 'На сервере произошла ошибка' : message });
   next();
 });

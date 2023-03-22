@@ -62,7 +62,6 @@ module.exports.createUser = (req, res, next) => {
     .then((newuser) => res.status(200).send({ id: newuser._id, name: newuser.name }))
     .catch((err) => {
       if (err.toString().indexOf('ValidationError') >= 0) {
-        console.log(err);
         throw new ValidationError('Ошибка валидации');
       } else {
         throw new Error('На сервере произошла ошибка');
