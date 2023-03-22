@@ -131,21 +131,25 @@ module.exports.login = (req, res, next) => {
         throw new IncorrectEmailPasswordError('Пользователь не найден');
       }
       // пользователь найден
-      return bcrypt.compare(password, finduser.password);
+      //  return bcrypt.compare(password, finduser.password);
+      if (bcrypt.compare(password, finduser.password)) {
+        console.log('xxxxx');
+        console.log(finduser);
+        const _id = jwt.sign({ _id: finduser._id }, 'some-secret-key', { expiresIn: '7d' });
+        res.status(200).send({ _id });
+      } else {
+        throw new IncorrectEmailPasswordError('Неверные email или пароль');
+      }
     })
-    .then((matched) => {
-      console.log('matched');
-      console.log(matched);
+    /*  .then((matched) => {
       if (!matched) {
-        console.log(222222);
         // хеши не совпали — отклоняем промис
         throw new IncorrectEmailPasswordError('Неверные email или пароль');
       }
       // аутентификация успешна
-      console.log(333333);
       const _id = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
       res.status(200).send({ _id });
-    })
+    })  */
     .catch(next);
 };
 
@@ -159,6 +163,9 @@ module.exports.getMeInfo = (req, res, next) => {
       } else {
         res.status(200).send(resUser);
       }
+    })
+    .catch((err) => {
+      res.status(500).send(err);
     })
     .catch(next);
 };
