@@ -59,7 +59,7 @@ module.exports.createUser = (req, res, next) => {
       email,
       password: hash,
     }))
-    .then((newuser) => res.status(200).send({ id: newuser._id, name: newuser.name }))
+    .then((newuser) => res.status(200).send({ data: newuser }))
     .catch((err) => {
       if (err.toString().indexOf('ValidationError') >= 0) {
         throw new ValidationError('Ошибка валидации');
