@@ -150,9 +150,9 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.getMeInfo = (req, res, next) => {
-  const userId = req.user._id;
+  const { _id } = req.user;
 
-  users.findById(userId)
+  users.findById(_id)
     .then((resUser) => {
       res.status(200).send(resUser);
       /*  if (!resUser) {
