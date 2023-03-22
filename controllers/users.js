@@ -131,14 +131,18 @@ module.exports.login = (req, res, next) => {
         throw new IncorrectEmailPasswordError('Пользователь не найден');
       }
       // пользователь найден
-      bcrypt.compare(password, finduser.password);
+      return bcrypt.compare(password, finduser.password);
     })
     .then((matched) => {
+      console.log('matched');
+      console.log(matched);
       if (!matched) {
+        console.log(222222);
         // хеши не совпали — отклоняем промис
         throw new IncorrectEmailPasswordError('Неверные email или пароль');
       }
       // аутентификация успешна
+      console.log(333333);
       const _id = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
       res.status(200).send({ _id });
     })
