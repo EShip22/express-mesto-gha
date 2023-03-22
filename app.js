@@ -19,9 +19,8 @@ app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 app.use('/', require('./routes/users'));
 
-//  app.patch('*', (req, res) => {
 app.patch('*', () => {
-  throw new NotFoundError('не верный URL');//  res.status(404).send({ message: 'не верный URL' });
+  throw new NotFoundError('не верный URL');
 });
 app.use(errors());
 app.use((err, req, res, next) => {

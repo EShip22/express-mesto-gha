@@ -22,11 +22,6 @@ module.exports.getUsers = (req, res, next) => {
 
 module.exports.getUser = (req, res, next) => {
   const { userId } = req.params;
-  /*  if (userId) {
-    if (userId.length % 12 !== 0) {
-      throw new ValidationError('Некорректный id пользователя');
-    }
-  } */
   users.findById(userId)
     .then((resUser) => {
       if (!resUser) {
@@ -126,30 +121,17 @@ module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
   user.findOne({ email }).select('+password')
     .then((finduser) => {
-      console.log(111111);
       if (!finduser) {
         throw new IncorrectEmailPasswordError('Пользователь не найден');
       }
       // пользователь найден
-      //  return bcrypt.compare(password, finduser.password);
       if (bcrypt.compare(password, finduser.password)) {
-        console.log('xxxxx');
-        console.log(finduser);
         const _id = jwt.sign({ _id: finduser._id }, 'some-secret-key', { expiresIn: '7d' });
         res.status(200).send({ _id });
       } else {
         throw new IncorrectEmailPasswordError('Неверные email или пароль');
       }
     })
-    /*  .then((matched) => {
-      if (!matched) {
-        // хеши не совпали — отклоняем промис
-        throw new IncorrectEmailPasswordError('Неверные email или пароль');
-      }
-      // аутентификация успешна
-      const _id = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
-      res.status(200).send({ _id });
-    })  */
     .catch(next);
 };
 

@@ -20,17 +20,6 @@ router.get('/:userId', auth, celebrate({
     userId: Joi.string().alphanum().length(24),
   }),
 }), getUser);
-//  регистрируемся:
-//  {
-//    "email": "prank22@yandex.ru",
-//    "password": "sossz4ar"
-//  }
-//  в ответе "id": "6415e8b2b34852dc1c118653",
-//  логинимся. в ответе:
-//  {
-//  "_id": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
-//  eyJpYXQiOjE2NzkxNTg4NDcsImV4cCI6MTY3OTc2MzY0N30.CHi0uu9TtMJTRniL0LGWvkl3eKysQfOScZ1pZZjTszA"
-//  }
 
 const httpRegexG = /https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)/;
 

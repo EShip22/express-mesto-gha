@@ -26,7 +26,6 @@ module.exports.createCard = (req, res, next) => {
   cards.create({ name, link, owner: _id })
     .then((card) => res.status(200).send({ card }))
     .catch((err) => {
-      //  throw new Error(err);
       if (err.toString().indexOf('ValidationError') >= 0) {
         throw new ValidationError('Ошибка валидации');
       } else {
@@ -57,9 +56,6 @@ module.exports.delCard = (req, res, next) => {
         }
       }
     })
-    /*  .catch(() => {
-      throw new Error('На сервере произошла ошибка');
-    })  */
     .catch(next);
 };
 
@@ -75,9 +71,6 @@ module.exports.likeCard = (req, res, next) => {
       res.status(200).send(cardRes);
     }
   })
-    /*  .catch(() => {
-      throw new Error('На сервере произошла ошибка');
-    })  */
     .catch(next);
 };
 
@@ -93,8 +86,5 @@ module.exports.dislikeCard = (req, res, next) => {
       res.status(200).send(cardRes);
     }
   })
-    /*  .catch(() => {
-      throw new Error('На сервере произошла ошибка');
-    })  */
     .catch(next);
 };
