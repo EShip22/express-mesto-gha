@@ -128,7 +128,7 @@ module.exports.login = (req, res, next) => {
     .then((finduser) => {
       console.log(111111);
       if (!finduser) {
-        throw new NotFoundError('Пользователь не найден');
+        throw new IncorrectEmailPasswordError('Пользователь не найден');
       }
       // пользователь найден
       bcrypt.compare(password, finduser.password);

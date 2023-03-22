@@ -39,7 +39,12 @@ router.post('/signup', celebrate({
     about: Joi.string().min(2).max(30),
   }),
 }), createUser);
-router.post('/signin', login);
+router.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+  }),
+}), login);
 router.patch('/me', auth, updateUser);
 router.patch('/me/avatar', auth, updateAvatar);
 router.patch('/*', showError);
