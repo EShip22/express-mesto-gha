@@ -3,7 +3,7 @@ const cards = require('../models/card');
 //  ошибки
 const DelNotMyCardError = require('../errors/del-not-my-card-err');
 const NotFoundError = require('../errors/not-found-err');
-const ValidationError = require('../errors/validation-err');
+//  const ValidationError = require('../errors/validation-err');
 
 module.exports.getCards = (req, res, next) => {
   cards.find({})
