@@ -43,7 +43,7 @@ module.exports.createUser = (req, res, next) => {
     name, about, avatar, email, password,
   } = req.body;
 
-  user.findOne({ email }).select('+password')
+  user.findOne({ email })
     .then((finduser) => {
       if (finduser) {
         throw new AlreadyExistsEmailError('Пользователь с данным email уже зарегистрирован');
@@ -59,7 +59,13 @@ module.exports.createUser = (req, res, next) => {
       email,
       password: hash,
     }))
-    .then((newuser) => res.status(200).send({ data: newuser }))
+    .then((newuser) => res.status(200).send({
+      _id: newuser._id,
+      name: newuser.name,
+      about: newuser.about,
+      avatar: newuser.avatar,
+      email: newuser.email,
+    }))
     .catch((err) => {
       if (err.toString().indexOf('ValidationError') >= 0) {
         throw new ValidationError('Ошибка валидации');
