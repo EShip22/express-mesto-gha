@@ -23,8 +23,13 @@ app.patch('*', (req, res) => {
 });
 app.use(errors());
 app.use((err, req, res, next) => {
+  console.log(333333);
   const { statusCode = 500, message } = err;
-  res.status(err.statusCode).send({ message: statusCode === 500 ? 'На сервере произошла ошибка' : message });
+  console.log(444444);
+  console.log('err.statusCode');
+  console.log(err);
+  res.status(statusCode).send({ message: statusCode === 500 ? 'На сервере произошла ошибка' : message });
+  console.log(555555);
   next();
 });
 

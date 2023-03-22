@@ -126,6 +126,7 @@ module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
   user.findOne({ email }).select('+password')
     .then((finduser) => {
+      console.log(111111);
       if (!finduser) {
         throw new NotFoundError('Пользователь не найден');
       }
@@ -142,6 +143,7 @@ module.exports.login = (req, res, next) => {
       res.status(200).send({ _id });
     })
     .catch(() => {
+      console.log(222222);
       throw new Error('На сервере произошла ошибка');
     })
     .catch(next);
