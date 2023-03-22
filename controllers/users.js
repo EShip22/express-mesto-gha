@@ -154,11 +154,12 @@ module.exports.getMeInfo = (req, res, next) => {
 
   users.findById(userId)
     .then((resUser) => {
-      if (!resUser) {
+      res.status(200).send(resUser);
+      /*  if (!resUser) {
         throw new NotFoundError('Пользователь не найден');
       } else {
         res.status(200).send(resUser);
-      }
+      }  */
     })
     .catch(next);
 };
