@@ -11,12 +11,24 @@ const httpRegexG = /https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z
 router.get('/', auth, getCards);
 router.post('/', auth, celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    link: Joi.string().pattern(httpRegexG),
+    name: Joi.string().required().min(2).max(30),
+    link: Joi.string().required().pattern(httpRegexG),
   }),
 }), createCard);
-router.delete('/:cardId', auth, delCard);
-router.put('/:cardId/likes', auth, likeCard);
-router.delete('/:cardId/likes', auth, dislikeCard);
+router.delete('/:cardId', auth, celebrate({
+  params: Joi.object().keys({
+    userId: Joi.string().alphanum().length(24),
+  }),
+}), delCard);
+router.put('/:cardId/likes', auth, celebrate({
+  params: Joi.object().keys({
+    userId: Joi.string().alphanum().length(24),
+  }),
+}), likeCard);
+router.delete('/:cardId/likes', auth, celebrate({
+  params: Joi.object().keys({
+    userId: Joi.string().alphanum().length(24),
+  }),
+}), dislikeCard);
 
 module.exports = router;

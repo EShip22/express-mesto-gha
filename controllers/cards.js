@@ -3,7 +3,7 @@ const cards = require('../models/card');
 //  ошибки
 const DelNotMyCardError = require('../errors/del-not-my-card-err');
 const NotFoundError = require('../errors/not-found-err');
-//  const ValidationError = require('../errors/validation-err');
+const ValidationError = require('../errors/validation-err');
 
 module.exports.getCards = (req, res, next) => {
   cards.find({})
@@ -26,12 +26,12 @@ module.exports.createCard = (req, res, next) => {
   cards.create({ name, link, owner: _id })
     .then((card) => res.status(200).send({ card }))
     .catch((err) => {
-      throw new Error(err);
-      /*  if (err.toString().indexOf('ValidationError') >= 0) {
+      //  throw new Error(err);
+      if (err.toString().indexOf('ValidationError') >= 0) {
         throw new ValidationError('Ошибка валидации');
       } else {
         throw new Error('На сервере произошла ошибка');
-      } */
+      }
     })
     .catch(next);
 };
