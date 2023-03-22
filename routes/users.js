@@ -51,8 +51,8 @@ router.post('/signin', celebrate({
 }), login);
 router.patch('/me', auth, celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
   }),
 }), updateUser);
 router.patch('/me/avatar', auth, celebrate({
