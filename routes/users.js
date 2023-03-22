@@ -28,11 +28,13 @@ router.get('/:userId', auth, getUser);
 //  eyJpYXQiOjE2NzkxNTg4NDcsImV4cCI6MTY3OTc2MzY0N30.CHi0uu9TtMJTRniL0LGWvkl3eKysQfOScZ1pZZjTszA"
 //  }
 
+const httpRegexG = /https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)/;
+
 router.post('/signup', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
-    avatar: Joi.string().required().url(),
+    avatar: Joi.string().required().pattern(httpRegexG),
     name: Joi.string().required().min(2).max(30),
     about: Joi.string().min(2).max(30),
   }),
