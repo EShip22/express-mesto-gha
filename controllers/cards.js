@@ -25,12 +25,13 @@ module.exports.createCard = (req, res, next) => {
   const { _id } = req.user;
   cards.create({ name, link, owner: _id })
     .then((card) => res.status(200).send({ data: card }))
-    .catch((err) => {
-      if (err.toString().indexOf('ValidationError') >= 0) {
+    .catch(() => {
+      throw new Error('На сервере произошла ошибка');
+      /*  if (err.toString().indexOf('ValidationError') >= 0) {
         throw new ValidationError('Ошибка валидации');
       } else {
         throw new Error('На сервере произошла ошибка');
-      }
+      } */
     })
     .catch(next);
 };
