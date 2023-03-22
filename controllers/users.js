@@ -160,9 +160,6 @@ module.exports.getMeInfo = (req, res, next) => {
         res.status(200).send(resUser);
       }
     })
-    .catch(() => {
-      throw new Error('На сервере произошла ошибка');
-    })
     .catch(next);
 };
 
