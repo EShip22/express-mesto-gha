@@ -7,21 +7,19 @@ const app = express();
 const bodyParser = require('body-parser');
 const NotFoundError = require('./errors/not-found-err');
 
-const {
-  createUser,
-  login,
-} = require('./controllers/users');
+const users = require('./routes/users');
+const cards = require('./routes/cards');
 
 mongoose.connect('mongodb://127.0.0.1:27017/mydb');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/users', require('./routes/users'));
-app.use('/cards', require('./routes/cards'));
+app.use('/users', users);
+app.use('/cards', cards);
 
-app.post('/signup', createUser);
-app.post('/login', login);
+app.post('/signup', users);
+app.post('/login', users);
 
 app.use('*', () => {
   throw new NotFoundError('неверный URL');
