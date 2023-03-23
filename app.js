@@ -19,7 +19,7 @@ app.use('/users', users);
 app.use('/cards', cards);
 
 app.post('/signup', users);
-app.post('/login', users);
+app.post('/signin', users);
 
 app.use('*', () => {
   throw new NotFoundError('неверный URL');
