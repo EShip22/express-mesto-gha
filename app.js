@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
-//  app.use('/', require('./routes/users'));
+app.use('/', require('./routes/users'));
 
 app.use('*', () => {
   throw new NotFoundError('неверный URL');
