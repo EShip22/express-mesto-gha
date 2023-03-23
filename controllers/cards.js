@@ -14,10 +14,8 @@ module.exports.getCards = (req, res, next) => {
       res.status(200).send(resCards);
     })
     .catch((err) => {
-      //  throw new Error('На сервере произошла ошибка');
       next(err);
     });
-  //  .catch(next);
 };
 
 module.exports.createCard = (req, res, next) => {

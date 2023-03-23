@@ -1,4 +1,3 @@
-//  const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
@@ -8,16 +7,21 @@ const app = express();
 const bodyParser = require('body-parser');
 const NotFoundError = require('./errors/not-found-err');
 
-mongoose.connect('mongodb://127.0.0.1:27017/mydb');
+const {
+  createUser,
+  login,
+} = require('./controllers/users');
 
-//  app.use(express.static(path.join((__dirname, 'public'))));
+mongoose.connect('mongodb://127.0.0.1:27017/mydb');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
-app.use('/', require('./routes/users'));
+
+app.post('/signin', createUser);
+app.post('/login', login);
 
 app.use('*', () => {
   throw new NotFoundError('неверный URL');

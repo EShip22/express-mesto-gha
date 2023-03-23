@@ -63,13 +63,11 @@ module.exports.createUser = (req, res, next) => {
     }))
     .catch((err) => {
       if (err.toString().indexOf('ValidationError') >= 0) {
-        //  throw new ValidationError('Ошибка валидации');
         next(new ValidationError('Ошибка валидации'));
         return;
       }
       next(err);
     });
-  //  .catch(next);
 };
 
 module.exports.updateUser = (req, res, next) => {
@@ -93,7 +91,6 @@ module.exports.updateUser = (req, res, next) => {
       }
       next(err);
     });
-  //  .catch(next);
 };
 
 module.exports.updateAvatar = (req, res, next) => {
@@ -114,7 +111,6 @@ module.exports.updateAvatar = (req, res, next) => {
       }
       next(err);
     });
-  //  .catch(next);
 };
 
 module.exports.login = (req, res, next) => {
@@ -147,12 +143,6 @@ module.exports.getMeInfo = (req, res, next) => {
       }
     })
     .catch((err) => {
-      //  res.status(500).send(err);
       next(err);
     });
-  //  .catch(next);
 };
-
-/*  module.exports.showError = () => {
-  throw new NotFoundError('неверный URL');
-};  */
