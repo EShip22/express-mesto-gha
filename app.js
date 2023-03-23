@@ -1,4 +1,4 @@
-const path = require('path');
+//  const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
@@ -10,16 +10,16 @@ const NotFoundError = require('./errors/not-found-err');
 
 mongoose.connect('mongodb://127.0.0.1:27017/mydb');
 
-app.use(express.static(path.join((__dirname, 'public'))));
+//  app.use(express.static(path.join((__dirname, 'public'))));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
-app.use('/', require('./routes/users'));
+//  app.use('/', require('./routes/users'));
 
-app.patch('*', () => {
+app.use('*', () => {
   throw new NotFoundError('неверный URL');
 });
 app.use(errors());
