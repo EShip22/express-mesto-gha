@@ -7,7 +7,7 @@ const {
   getUser,
   updateUser,
   updateAvatar,
-  showError,
+  //  showError,
   login,
   getMeInfo,
 } = require('../controllers/users');
@@ -49,6 +49,6 @@ router.patch('/me/avatar', auth, celebrate({
     avatar: Joi.string().pattern(httpRegexG),
   }),
 }), updateAvatar);
-router.patch('/*', showError);
+//  router.patch('/*', showError);
 
 module.exports = router;

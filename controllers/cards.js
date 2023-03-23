@@ -26,13 +26,12 @@ module.exports.createCard = (req, res, next) => {
   cards.create({ name, link, owner: _id })
     .then((card) => res.status(200).send({ card }))
     .catch((err) => {
-      if (err.toString().indexOf('ValidationError') >= 0) {
-        throw new ValidationError('Ошибка валидации');
-      } else {
-        throw new Error('На сервере произошла ошибка');
+      if (err.name === 'ValidationError') {
+        next(new ValidationError('Ошибка валидации'));
+        return;
       }
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 module.exports.delCard = (req, res, next) => {
@@ -49,10 +48,11 @@ module.exports.delCard = (req, res, next) => {
           cards.findByIdAndDelete(cardId)
             .then((cardRes) => {
               res.status(200).send(cardRes);
-            });
+            })
+            .catch((err) => next(err));
         } else {
           // ошибка, что не моя карточка
-          throw new DelNotMyCardError('Разрешается удалять только свои карточки');
+          next(new DelNotMyCardError('Разрешается удалять только свои карточки'));
         }
       }
     })
@@ -63,7 +63,7 @@ module.exports.likeCard = (req, res, next) => {
   cards.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
-    { new: true, runValidators: true },
+    { new: true },
   ).then((cardRes) => {
     if (!cardRes) {
       throw new NotFoundError('Карточка не найдена');
@@ -78,7 +78,7 @@ module.exports.dislikeCard = (req, res, next) => {
   cards.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
-    { new: true, runValidators: true },
+    { new: true },
   ).then((cardRes) => {
     if (!cardRes) {
       throw new NotFoundError('Карточка не найдена');

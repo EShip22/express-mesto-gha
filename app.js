@@ -20,7 +20,7 @@ app.use('/cards', require('./routes/cards'));
 app.use('/', require('./routes/users'));
 
 app.patch('*', () => {
-  throw new NotFoundError('не верный URL');
+  throw new NotFoundError('неверный URL');
 });
 app.use(errors());
 app.use((err, req, res, next) => {

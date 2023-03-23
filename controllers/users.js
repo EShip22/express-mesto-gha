@@ -65,6 +65,7 @@ module.exports.createUser = (req, res, next) => {
       if (err.toString().indexOf('ValidationError') >= 0) {
         //  throw new ValidationError('Ошибка валидации');
         next(new ValidationError('Ошибка валидации'));
+        return;
       }
       next(err);
     });
@@ -88,6 +89,7 @@ module.exports.updateUser = (req, res, next) => {
     .catch((err) => {
       if (err.toString().indexOf('ValidationError') >= 0) {
         next(new ValidationError('Ошибка валидации'));
+        return;
       }
       next(err);
     });
