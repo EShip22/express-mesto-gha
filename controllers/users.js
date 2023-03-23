@@ -63,12 +63,12 @@ module.exports.createUser = (req, res, next) => {
     }))
     .catch((err) => {
       if (err.toString().indexOf('ValidationError') >= 0) {
-        throw new ValidationError('Ошибка валидации');
-      } else {
-        throw new Error('На сервере произошла ошибка');
+        //  throw new ValidationError('Ошибка валидации');
+        next(new ValidationError('Ошибка валидации'));
       }
-    })
-    .catch(next);
+      next(err);
+    });
+  //  .catch(next);
 };
 
 module.exports.updateUser = (req, res, next) => {
@@ -79,7 +79,7 @@ module.exports.updateUser = (req, res, next) => {
 
   users.findByIdAndUpdate(_id, { name, about }, { new: true, runValidators: true })
     .then((resUser) => {
-      if (resUser.length === 0) {
+      if (!resUser) {
         throw new NotFoundError('Пользователь не найден');
       } else {
         res.status(200).send(res.req.body);
@@ -87,12 +87,11 @@ module.exports.updateUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.toString().indexOf('ValidationError') >= 0) {
-        throw new ValidationError('Ошибка валидации');
-      } else {
-        throw new Error('На сервере произошла ошибка');
+        next(new ValidationError('Ошибка валидации'));
       }
-    })
-    .catch(next);
+      next(err);
+    });
+  //  .catch(next);
 };
 
 module.exports.updateAvatar = (req, res, next) => {
