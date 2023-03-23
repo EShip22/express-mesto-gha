@@ -95,12 +95,12 @@ module.exports.updateUser = (req, res, next) => {
 };
 
 module.exports.updateAvatar = (req, res, next) => {
-  const { avatar } = req.headers;
+  const { avatar } = req.body;
   const { _id } = req.user;
 
   users.findByIdAndUpdate(_id, { avatar }, { new: true, runValidators: true })
     .then((resUser) => {
-      if (resUser.length === 0) {
+      if (!resUser) {
         throw new NotFoundError('Пользователь не найден');
       } else {
         res.status(200).send(res.req.body);
@@ -108,12 +108,11 @@ module.exports.updateAvatar = (req, res, next) => {
     })
     .catch((err) => {
       if (err.toString().indexOf('ValidationError') >= 0) {
-        throw new ValidationError('Ошибка валидации');
-      } else {
-        throw new Error('На сервере произошла ошибка');
+        next(new ValidationError('Ошибка валидации'));
       }
-    })
-    .catch(next);
+      next(err);
+    });
+  //  .catch(next);
 };
 
 module.exports.login = (req, res, next) => {
@@ -146,11 +145,12 @@ module.exports.getMeInfo = (req, res, next) => {
       }
     })
     .catch((err) => {
-      res.status(500).send(err);
-    })
-    .catch(next);
+      //  res.status(500).send(err);
+      next(err);
+    });
+  //  .catch(next);
 };
 
-module.exports.showError = () => {
+/*  module.exports.showError = () => {
   throw new NotFoundError('неверный URL');
-};
+};  */
