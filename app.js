@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
-app.post('/signin', createUser);
+app.post('/signup', createUser);
 app.post('/login', login);
 
 app.use('*', () => {
