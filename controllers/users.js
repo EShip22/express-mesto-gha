@@ -108,6 +108,7 @@ module.exports.updateAvatar = (req, res, next) => {
     .catch((err) => {
       if (err.toString().indexOf('ValidationError') >= 0) {
         next(new ValidationError('Ошибка валидации'));
+        return;
       }
       next(err);
     });

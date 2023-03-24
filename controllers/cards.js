@@ -8,7 +8,7 @@ const ValidationError = require('../errors/validation-err');
 module.exports.getCards = (req, res, next) => {
   cards.find({})
     .then((resCards) => {
-      if (!resCards) {
+      if (resCards.length === 0) {
         throw new NotFoundError('Карточки не найдены');
       }
       res.status(200).send(resCards);
