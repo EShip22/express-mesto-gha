@@ -1,0 +1,11 @@
+.profile-info {
+	color: #fff;
+	margin-left: 26px;
+}
+@media screen and (max-width:666px) {
+    .profile-info {
+		margin: 0 auto;
+		max-width: calc(100% - 2*19px);
+		text-align: center;
+    }
+} 

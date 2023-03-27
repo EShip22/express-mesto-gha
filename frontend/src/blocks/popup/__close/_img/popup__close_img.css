@@ -1,0 +1,21 @@
+.popup__close_img {
+	min-width: 32px;
+	min-height: 32px;
+	position: absolute;
+	top: -50px;
+	right: -50px;
+}
+
+.popup__close_img:hover {
+	opacity: 0.6;
+	cursor: pointer;
+}
+
+@media screen and (max-width:575px) {
+    .popup__close_img {
+		top: -40px;
+		right: 0;
+		min-width: 20px;
+		min-height: 20px;
+    }
+}

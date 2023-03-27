@@ -1,0 +1,22 @@
+.profile__avatar_overlay {
+  position: absolute;
+	opacity: 0;
+	top: 0;
+	left: 0;
+	background-image: url('../../../../images/Pencil.png');
+	background-color: rgba(0, 0, 0, 0.8);
+	z-index: 1;
+	background-repeat: no-repeat;
+	background-size: 25%;
+}
+
+.profile__avatar_overlay:hover {
+	cursor: pointer;
+	opacity: 1;
+}
+
+@media screen and (max-width:666px) {
+	.profile__avatar_overlay {
+		left: calc(50% - 60px);
+	}
+}

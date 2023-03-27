@@ -1,0 +1,9 @@
+.popup__container-for-del-card {
+	background-color: #FFFFFF;
+	margin: 0 auto;
+	display: block;
+	position: relative;
+	width: 430px;
+	align-self: center;
+	border-radius: 10px;
+}

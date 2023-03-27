@@ -1,0 +1,8 @@
+.popup__container-for-img {
+	background-color: rgba(0,0,0,0);
+	margin: 0 auto;
+	display: block;
+	position: relative;
+	width: min-content;
+	align-self: center;
+}

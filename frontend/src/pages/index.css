@@ -1,0 +1,75 @@
+/*normalize*/
+@import url(../vendor/normalize.css);
+/*шрифты*/
+@import url(../vendor/fonts.css);
+/*page*/
+@import url(../blocks/page/page.css);
+/*header*/
+@import url(../blocks/header/header.css);
+@import url(../blocks/header/__logo/header__logo.css);
+@import url(../blocks/header/__email/header__email.css);
+@import url(../blocks/header/__welcome/header__welcome.css);
+/*popup*/
+@import url(../blocks/popup/popup.css);
+@import url(../blocks/popup/__container/popup__container.css);
+@import url(../blocks/popup/__container-for-img/popup__container-for-img.css);
+@import url(../blocks/popup/__container-for-img/_auth/popup__container-for-img_auth.css);
+@import url(../blocks/popup/__container-for-img/_img/popup__container-for-img_img.css);
+
+@import url(../blocks/popup/__container-for-del-card/popup__container-for-del-card.css);
+@import url(../blocks/popup/__container/_img/popup__container_img.css);
+@import url(../blocks/popup/_opened/popup_opened.css);
+@import url(../blocks/popup/_show-image/popup_show-image.css);
+@import url(../blocks/popup/__close/popup__close.css);
+@import url(../blocks/popup/__close/_img/popup__close_img.css);
+@import url(../blocks/popup/__img/popup__img.css);
+@import url(../blocks/popup/__text/popup__text.css);
+@import url(../blocks/popup/__text/_auth/popup__text_auth.css);
+@import url(../blocks/popup/__header/popup__header.css);
+@import url(../blocks/popup/__input/popup__input.css);
+@import url(../blocks/popup/__save/popup__save.css);
+@import url(../blocks/popup/__form/popup__form.css);
+@import url(../blocks/popup/__question/popup__question.css);
+@import url(../blocks/popup/__input/_type_error/popup__input_type_error.css);
+@import url(../blocks/popup/__input-error/popup__input-error.css);
+@import url(../blocks/popup/__input-error/_solo/popup__input-error_solo.css);
+@import url(../blocks/popup/__save/_disabled/popup__save_disabled.css);
+/*content*/
+@import url(../blocks/content/content.css);
+/*profile*/
+@import url(../blocks/profile/profile.css);
+@import url(../blocks/profile/__avatar/profile__avatar.css);
+@import url(../blocks/profile/__avatar/_overlay/profile__avatar_overlay.css);
+@import url(../blocks/profile/__add-button/profile__add-button.css);
+/*profile_info*/
+@import url(../blocks/profile-info/profile-info.css);
+@import url(../blocks/profile-info/__header/profile-info__header.css);
+@import url(../blocks/profile-info/__description/profile-info__description.css);
+@import url(../blocks/profile-info/__edit-button/profile-info__edit-button.css);
+/*elements*/
+@import url(../blocks/elements/elements.css);
+/*element*/
+@import url(../blocks/element/element.css);
+@import url(../blocks/element/__title/element__title.css);
+@import url(../blocks/element/__place/element__place.css);
+@import url(../blocks/element/__caption/element__caption.css);
+@import url(../blocks/element/__trash/element__trash.css);
+@import url(../blocks/element/__trash/_show/element__trash_show.css);
+/*like-container*/
+@import url(../blocks/like-container/like-container.css);
+@import url(../blocks/like-container/__count/like-container__count.css);
+@import url(../blocks/like-container/__like/like-container__like.css);
+@import url(../blocks/like-container/__like/_enabled/like-container__like_enabled.css);
+/*footer*/
+@import url(../blocks/footer/footer.css);
+@import url(../blocks/footer/__copyright/footer__copyright.css);
+/*auth-container*/
+@import url(../blocks/auth-container/auth-container.css);
+@import url(../blocks/auth-container/__form/auth-container__form.css);
+@import url(../blocks/auth-container/__input/auth-container__input.css);
+@import url(../blocks/auth-container/__save/auth-container__save.css);
+@import url(../blocks/auth-container/__register-already/auth-container__register-already.css);
+@import url(../blocks/auth-container/__register-already/_link/auth-container__register-already_link.css);
+@import url(../blocks/auth-container/__header/auth-container__header.css);
+/*login-container*/
+@import url(../blocks/login-container/login-container.css);

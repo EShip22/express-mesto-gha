@@ -1,0 +1,15 @@
+.element {
+	max-width: 100%;
+	background-color: #FFFFFF;
+	overflow: hidden;
+	border-radius: 3%;
+	position: relative;
+}
+@media screen and (max-width:575px) {
+    .element {
+		margin-top: 20px;
+    }
+    .element:first-child {
+		margin-top: 36px;
+    }
+} 

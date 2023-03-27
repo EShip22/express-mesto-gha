@@ -1,0 +1,13 @@
+.popup__save_disabled {
+	background-color: #FFFFFF;
+	opacity: 0.2;
+	color: #000000;
+	border: 1px solid #000000;
+}
+
+.popup__save_disabled:hover {
+	background-color: #FFFFFF;
+	opacity: 0.2;
+	color: #000000;
+	border: 1px solid #000000;
+}

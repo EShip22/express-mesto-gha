@@ -1,0 +1,7 @@
+.popup__container-for-img_auth {
+	background-color: #FFFFFF;
+	display: flex;
+	flex-direction: column;
+	min-width: 430px;
+	border-radius: 10px;
+}

@@ -1,0 +1,9 @@
+.auth-container__register-already_link {
+	transition: opacity 0.2s linear;
+	text-decoration: none;
+}
+
+.auth-container__register-already_link:hover{
+	cursor: pointer;
+	opacity: 0.8;
+}

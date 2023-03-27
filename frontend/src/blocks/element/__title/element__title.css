@@ -1,0 +1,7 @@
+.element__title {
+	margin: 22px 15px 31px 21px;
+	color: #000000;
+	display: flex;
+	justify-content: space-between;
+	margin-left: 21px;
+}

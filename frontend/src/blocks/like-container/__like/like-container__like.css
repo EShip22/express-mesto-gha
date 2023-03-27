@@ -1,0 +1,16 @@
+.like-container__like {
+	transition: opacity 0.4s linear;
+	min-width: 22px;
+	min-height: 19px;
+	background-image: url('../../../images/like.svg');
+	background-size: 22px 19px;
+	background-repeat: no-repeat;
+	background-color: #FFFFFF;
+	border: 0;
+	padding: 0;
+	margin-top: 5px;
+}
+.like-container__like:hover {
+	opacity: 0.5;
+	cursor: pointer;
+}
