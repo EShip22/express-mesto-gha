@@ -22,7 +22,7 @@ module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
   const { _id } = req.user;
   cards.create({ name, link, owner: _id })
-    .then((card) => res.status(200).send({ card }))
+    .then((card) => res.status(200).send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new ValidationError('Ошибка валидации'));
@@ -73,6 +73,7 @@ module.exports.likeCard = (req, res, next) => {
 };
 
 module.exports.dislikeCard = (req, res, next) => {
+  console.log(req);
   cards.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },

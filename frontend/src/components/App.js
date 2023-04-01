@@ -67,7 +67,7 @@ const  App = () => {
         .then((res)=> {
           if(res) {
             setIsLogin(true);
-            setUserEmail(res.data.email);
+            setUserEmail(res.email);
             navigate("/");
           }
         })
@@ -86,7 +86,7 @@ const  App = () => {
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some(i => i/*._id*/ === currentUser._id);
     
     if (isLiked) {
       api.delLike(card._id)
@@ -136,22 +136,20 @@ const  App = () => {
       .then((res) => {
         setIsInfoTooltipOpen(true);
         setAuthResponseStatus("ok");
-        console.log(res);
         setInfoTooltipText("Вы успешно зарегистрированы");
       })
       .catch((err) => {
         setAuthResponseStatus("error");
         setIsInfoTooltipOpen(true);
         setInfoTooltipText("Ошибка регистрации: " + err);
-        console.log(err);
       })
   }
 
   const handleLogin = (props) => {
     api.authorization(props)
       .then((res) => {
-        if (res.token) {
-          localStorage.setItem('jwt', res.token);
+        if (res._id) {
+          localStorage.setItem('jwt', res._id);
         }
         setIsLogin(true);
         setUserEmail(props.email);

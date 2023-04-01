@@ -34,6 +34,7 @@ module.exports.getUser = (req, res, next) => {
 };
 
 module.exports.createUser = (req, res, next) => {
+  console.log('createuser');
   const {
     name, about, avatar, email, password,
   } = req.body;
@@ -81,7 +82,8 @@ module.exports.updateUser = (req, res, next) => {
       if (!resUser) {
         throw new NotFoundError('Пользователь не найден');
       } else {
-        res.status(200).send(res.req.body);
+        //  console.log(resUser);
+        res.status(200).send(resUser);
       }
     })
     .catch((err) => {
@@ -102,7 +104,7 @@ module.exports.updateAvatar = (req, res, next) => {
       if (!resUser) {
         throw new NotFoundError('Пользователь не найден');
       } else {
-        res.status(200).send(res.req.body);
+        res.status(200).send(resUser);
       }
     })
     .catch((err) => {
@@ -114,7 +116,8 @@ module.exports.updateAvatar = (req, res, next) => {
     });
 };
 
-module.exports.login = (req, res, next) => {
+/*  module.exports.login = (req, res, next) => {
+  console.log(111);
   const { email, password } = req.body;
   user.findOne({ email }).select('+password')
     .then((finduser) => {
@@ -128,6 +131,26 @@ module.exports.login = (req, res, next) => {
       } else {
         throw new IncorrectEmailPasswordError('Неверные email или пароль');
       }
+    })
+    .catch(next);
+};  */
+
+module.exports.login = (req, res, next) => {
+  const { email, password } = req.body;
+  user.findOne({ email }).select('+password')
+    .then((finduser) => {
+      if (!finduser) {
+        throw new IncorrectEmailPasswordError('Пользователь не найден');
+      }
+      return bcrypt.compare(password, finduser.password)
+        .then((matched) => {
+          if (!matched) {
+            throw new IncorrectEmailPasswordError('Неверные email или пароль');
+          } else {
+            const _id = jwt.sign({ _id: finduser._id }, 'some-secret-key', { expiresIn: '7d' });
+            res.status(200).send({ _id });
+          }
+        });
     })
     .catch(next);
 };
