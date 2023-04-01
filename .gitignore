@@ -10,7 +10,7 @@ node_modules
 
 # Optional npm cache directory
 .npm
-build
+#build
 .env
 
 # Optional REPL history
@@ -26,7 +26,7 @@ build
 /coverage
 
 # production
-/build
+#/build
 
 # misc
 .env.local
